@@ -1,5 +1,8 @@
 package utils.Validators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This utility class helps in validating password.
  */
@@ -9,12 +12,12 @@ public final class PasswordValidator {
 
     private PasswordValidator() {}
 
-    public static String validate(String password) {
-        StringBuilder errors = new StringBuilder();
+    public static List<String> validate(String password) {
+        List<String> errors = new ArrayList<>();
 
         if (password == null || password.isEmpty()) {
-            errors.append("Password can not be empty.\n");
-            return errors.toString();
+            errors.add("Password can not be empty.\n");
+            return errors;
         }
 
         boolean hasUpper = false;
@@ -39,32 +42,32 @@ public final class PasswordValidator {
         }
 
         if (!hasUpper) {
-            errors.append("At least one uppercase letter required\n");
+            errors.add("At least one uppercase letter required.");
         }
 
         if (!hasLower) {
-            errors.append("At least one lowercase letter required\n");
+            errors.add("At least one lowercase letter required.");
         }
 
         if (!hasDigit) {
-            errors.append("At least one digit required\n");
+            errors.add("At least one digit required.");
         }
 
         if (!hasSpecial) {
-            errors.append("At least one special character required\n");
+            errors.add("At least one special character required.");
         }
 
         if (hasWhitespace) {
-            errors.append("Whitespace is not allowed\n");
+            errors.add("Whitespace is not allowed.");
         }
 
         if (password.length() < MIN_LENGTH) {
-            errors.append("Password must be at least " + MIN_LENGTH + " characters\n");
+            errors.add("Password must be at least " + MIN_LENGTH + " characters.");
         } else if (password.length() > MAX_LENGTH) {
-            errors.append("Password must be less than " + MAX_LENGTH + " characters\n");
+            errors.add("Password must be less than " + MAX_LENGTH + " characters.");
         }
 
         if (errors.isEmpty()) return null;
-        return errors.toString();
+        return errors;
     }
 }

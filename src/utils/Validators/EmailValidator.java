@@ -1,5 +1,8 @@
 package utils.Validators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This utility class helps in validating email.
  */
@@ -8,26 +11,26 @@ public final class EmailValidator {
 
     private EmailValidator() {}
 
-    public static String validate(String email) {
-        StringBuilder errors = new StringBuilder();
+    public static List<String> validate(String email) {
+        List<String> errors = new ArrayList<>();
 
         if (email == null || email.trim().isEmpty()) {
-            errors.append("Email can not be empty.\n");
-            return errors.toString();
+            errors.add("Email can not be empty.");
+            return errors;
         }
 
         email = email.trim();
 
         boolean isValid = email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
         if (!isValid) {
-            errors.append("Please enter a valid email address.\n");
+            errors.add("Please enter a valid email address.");
         }
 
         if (email.length() > MAX_LENGTH) {
-            errors.append("Email should be less than " + MAX_LENGTH + " characters\n");
+            errors.add("Email should be less than " + MAX_LENGTH + " characters.");
         }
 
         if (errors.isEmpty()) return null;
-        return errors.toString();
+        return errors;
     }
 }
