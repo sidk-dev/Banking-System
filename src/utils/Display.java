@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.List;
+
 public final class Display {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -23,7 +25,15 @@ public final class Display {
         System.out.printf("%s%s%s\n", ANSI_GREEN, msg, ANSI_RESET_COLOR);
     }
 
-    public static void failure(String msg) {
+    public static void error(String msg) {
         System.out.printf("%s%s%s\n", ANSI_RED, msg, ANSI_RESET_COLOR);
+    }
+
+    public static void errors(List<String> errors) {
+        System.out.print(ANSI_RED);
+        for (String str: errors) {
+            System.out.printf("-> %s\n", str);
+        }
+        System.out.print(ANSI_RESET_COLOR);
     }
 }

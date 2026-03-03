@@ -1,5 +1,6 @@
-import utils.Constants;
-import utils.Styles;
+import services.AccountService;
+import session.Session;
+import utils.Display;
 
 import java.util.Scanner;
 
@@ -12,18 +13,52 @@ public class Main {
         byte choice;
 
         do {
-            System.out.println("(1) Create account\n(2) Login\n(3) Deposit\n(4) Withdraw\n(5) View balance\n(6) View transaction history\n(7) Exit");
-            System.out.print("\nEnter your choice number (1/2/...): ");
+            if (Session.isLoggedIn()) {
+                Display.success("Hi! " + Session.getCurrentUser().getFullName());
+                Display.menu("(1) Logout\n(2) Deposit\n(3) Withdraw\n(4) View balance\n(5) View transaction history\n(6) Exit");
+            } else {
+                Display.menu("(1) Create account\n(2) Login\n(3) Exit");
+            }
 
+            Display.input("\nEnter your choice number: ");
             choice = input.nextByte();
-            if (choice < 1 || choice > Constants.CHOICES) {
-                System.out.printf("%sPlease enter a valid choice%s\n\n", Styles.ANSI_RED, Styles.ANSI_RESET_COLOR);
-                continue;
+
+            if (Session.isLoggedIn()) {
+                switch (choice) {
+                    case 1:
+                        AccountService.logout();
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        Display.error("Please enter a valid choice");
+                }
+
+                if (choice == 6) {
+                    break;
+                }
+            } else {
+                switch (choice) {
+                    case 1:
+                        AccountService.createAccount();
+                        break;
+                    case 2:
+                        AccountService.login();
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        Display.error("Please enter a valid choice");
+                }
+
+                if (choice == 3) {
+                    break;
+                }
             }
 
             System.out.println();
-        } while (choice != 7);
+        } while (true);
 
-        System.out.printf("%sGood Bye!%s\n", Styles.ANSI_GREEN, Styles.ANSI_RESET_COLOR);
+        Display.success("Good Bye!");
     }
 }
