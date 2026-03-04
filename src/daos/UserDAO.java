@@ -5,14 +5,12 @@ import models.User;
 import session.Session;
 import utils.Display;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.UUID;
 
 public final class UserDAO {
-    private static final String[] headers = {"FullName", "Email", "Password", "UUID"};
+    private static final String fileName = "users.csv";
+    private static final String[] headers = {"UUID", "FullName", "Email", "Password"};
     public static final CSVFormat CSV_FORMAT = CSVFormat.DEFAULT.builder()
             .setHeader(headers)
             .get();
@@ -21,19 +19,20 @@ public final class UserDAO {
 
     public static void saveUser(String fullName, String email, String password) {
         try (
-                FileWriter writer = new FileWriter("users.csv", true);
+                Writer writer = new FileWriter(fileName, true);
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSV_FORMAT)
         ){
             String uuid = UUID.randomUUID().toString();
-            csvPrinter.printRecord(fullName, email, password, uuid);
+            csvPrinter.printRecord(uuid, fullName, email, password);
             Display.success("User Saved, you can log in now!");
+            AccountDAO.createAccount(uuid);
         } catch (IOException e) {
             Display.error("Something went wrong: " + e.getMessage());
         }
     }
 
     public static void loginUser(String email, String password) {
-        try (Reader reader = new FileReader("users.csv")) {
+        try (Reader reader = new FileReader(fileName)) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder()
                     .setSkipHeaderRecord(true)
                     .setHeader(headers)
@@ -42,7 +41,7 @@ public final class UserDAO {
 
             for (CSVRecord record : records) {
                 if (email.equals(record.get("Email")) && password.equals(record.get("Password"))) {
-                    User u = new User(record.get("Full Name"), email, record.get("UUID"));
+                    User u = new User(record.get("FullName"), email, record.get("UUID"));
                     Session.saveCurrentUser(u);
 
                     Display.success("User logged in successfully!");

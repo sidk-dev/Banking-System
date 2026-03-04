@@ -1,3 +1,4 @@
+import daos.AccountDAO;
 import services.AccountService;
 import session.Session;
 import utils.Display;
@@ -15,7 +16,7 @@ public class Main {
         do {
             if (Session.isLoggedIn()) {
                 Display.success("Hi! " + Session.getCurrentUser().getFullName());
-                Display.menu("(1) Logout\n(2) Deposit\n(3) Withdraw\n(4) View balance\n(5) View transaction history\n(6) Exit");
+                Display.menu("(1) Deposit\n(2) Withdraw\n(3) View balance\n(4) View transaction history\n(5) Logout\n(6) Exit");
             } else {
                 Display.menu("(1) Create account\n(2) Login\n(3) Exit");
             }
@@ -25,7 +26,10 @@ public class Main {
 
             if (Session.isLoggedIn()) {
                 switch (choice) {
-                    case 1:
+                    case 3:
+                        AccountService.showBalance();
+                        break;
+                    case 5:
                         AccountService.logout();
                         break;
                     case 6:

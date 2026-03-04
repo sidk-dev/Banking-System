@@ -1,6 +1,8 @@
 package services;
 
+import daos.AccountDAO;
 import daos.UserDAO;
+import models.Account;
 import session.Session;
 import utils.Display;
 import utils.Validators.*;
@@ -92,5 +94,9 @@ public final class AccountService {
 
     public static void logout() {
         Session.saveCurrentUser(null);
+    }
+
+    public static void showBalance() {
+        Display.success("Your balance is: " + Account.getBalance());
     }
 }

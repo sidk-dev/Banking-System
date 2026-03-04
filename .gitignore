@@ -54,4 +54,5 @@ bin/
 .DS_Store
 
 users.csv
+accounts.csv
 .idea/
