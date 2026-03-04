@@ -1,27 +1,27 @@
 package models;
 
-public class User {
-    private String fullName;
-    private String email;
+import session.Session;
 
-    public User(String fullName, String email) {
+public class User {
+    private final String fullName;
+    private final String email;
+    private final String UUID;
+
+    public User(String fullName, String email, String UUID) {
         this.fullName = fullName;
         this.email = email;
+        this.UUID = UUID;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public String getUUID() {
+        return UUID;
     }
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
