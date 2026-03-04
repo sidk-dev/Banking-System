@@ -35,7 +35,7 @@ public final class AccountDAO {
         }
     }
 
-    public static void setBalance(long balance) {
+    public static void setBalance(double balance) {
         String tempPath = "temp_account.csv";
         try (
                 FileWriter writer = new FileWriter(tempPath, true);
@@ -66,7 +66,7 @@ public final class AccountDAO {
         }
     }
 
-    public static int getBalance() {
+    public static double getBalance() {
         try (Reader reader = new FileReader(fileName)) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder()
                     .setSkipHeaderRecord(true)
@@ -76,7 +76,7 @@ public final class AccountDAO {
 
             for (CSVRecord record : records) {
                 if (Session.getCurrentUser().getUUID().equals(record.get("UUID"))) {
-                    return Integer.parseInt(record.get("Balance"));
+                    return Double.parseDouble(record.get("Balance"));
                 }
             }
         } catch (Exception e) {

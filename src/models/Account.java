@@ -1,19 +1,19 @@
 package models;
 
 public final class Account {
-    private static long balance = 0;
+    private static double balance = 0;
     private Account() {}
 
-    public static long getBalance() {
+    public static double getBalance() {
         return balance;
     }
-    public static void setBalance(long balance) {
+    public static void setBalance(double balance) {
         Account.balance = balance;
     }
-    public static void addBalance(long balance) {
+    public static void addBalance(double balance) {
         Account.balance += balance;
     }
-    public static void deductBalance(long balance) {
+    public static void deductBalance(double balance) {
         Account.balance -= balance;
     }
 }

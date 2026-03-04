@@ -1,10 +1,8 @@
-import daos.AccountDAO;
-import models.Account;
+import java.util.Scanner;
+
 import services.AccountService;
 import session.Session;
 import utils.Display;
-
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {

@@ -105,10 +105,10 @@ public final class AccountService {
     public static void deposit() {
         Scanner input = new Scanner(System.in);
         Display.input("Enter the amount to add: ");
-        long amount;
+        double amount;
 
         try {
-            amount = input.nextLong();
+            amount = input.nextDouble();
             if (amount < 0) {
                 Display.error("Wrong amount.");
             } else if (amount > Integer.MAX_VALUE) {
@@ -129,10 +129,10 @@ public final class AccountService {
     public static void withdraw() {
         Scanner input = new Scanner(System.in);
         Display.input("Enter the amount to withdraw: ");
-        long amount;
+        double amount;
 
         try {
-            amount = input.nextLong();
+            amount = input.nextDouble();
             if (amount < 0) {
                 Display.error("Wrong amount.");
                 return;

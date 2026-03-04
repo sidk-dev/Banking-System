@@ -23,7 +23,7 @@ public final class TransactionDAO {
 
     private TransactionDAO() {}
 
-    public static void createTransaction(long amount, Transaction.TYPE type) {
+    public static void createTransaction(double amount, Transaction.TYPE type) {
         try (
                 FileWriter writer = new FileWriter(fileName, true);
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSV_FORMAT)
@@ -65,7 +65,7 @@ public final class TransactionDAO {
                     transactionList.add(new Transaction(
                             UUID.fromString(record.get("ID")),
                             UUID.fromString(record.get("UserID")),
-                            Integer.parseInt(record.get("Amount")),
+                            Double.parseDouble(record.get("Amount")),
                             Transaction.TYPE.valueOf(record.get("Type")),
                             ZonedDateTime.parse(record.get("TimeStamp"))
                     ));
