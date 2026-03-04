@@ -1,8 +1,10 @@
 package services;
 
 import daos.AccountDAO;
+import daos.TransactionDAO;
 import daos.UserDAO;
 import models.Account;
+import models.Transaction;
 import session.Session;
 import utils.Display;
 import utils.Validators.*;
@@ -118,6 +120,9 @@ public final class AccountService {
         }
 
         Account.addBalance(amount);
+        TransactionDAO.createTransaction(
+            amount, Transaction.TYPE.DEPOSIT
+        );
         AccountDAO.setBalance(Account.getBalance());
     }
 
@@ -141,6 +146,21 @@ public final class AccountService {
         }
 
         Account.deductBalance(amount);
+        TransactionDAO.createTransaction(
+                amount, Transaction.TYPE.WITHDRAW
+        );
         AccountDAO.setBalance(Account.getBalance());
+    }
+
+    public static void showTransactions(){
+        List<Transaction> tl = TransactionDAO.getTransactions();
+
+        if (tl.isEmpty()) {
+            Display.error("No transactions yet.");
+        } else {
+            for (Transaction transaction : tl) {
+                System.out.println(transaction);
+            }
+        }
     }
 }

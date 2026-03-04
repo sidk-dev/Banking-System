@@ -36,6 +36,9 @@ public class Main {
                     case 3:
                         AccountService.showBalance();
                         break;
+                    case 4:
+                        AccountService.showTransactions();
+                        break;
                     case 5:
                         AccountService.logout();
                         break;
