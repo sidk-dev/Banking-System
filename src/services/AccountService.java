@@ -99,4 +99,48 @@ public final class AccountService {
     public static void showBalance() {
         Display.success("Your balance is: " + Account.getBalance());
     }
+
+    public static void deposit() {
+        Scanner input = new Scanner(System.in);
+        Display.input("Enter the amount to add: ");
+        long amount;
+
+        try {
+            amount = input.nextLong();
+            if (amount < 0) {
+                Display.error("Wrong amount.");
+            } else if (amount > Integer.MAX_VALUE) {
+                Display.error("Too much amount to deposit.");
+            }
+        } catch (Exception e) {
+            Display.error("Invalid amount.");
+            return;
+        }
+
+        Account.addBalance(amount);
+        AccountDAO.setBalance(Account.getBalance());
+    }
+
+    public static void withdraw() {
+        Scanner input = new Scanner(System.in);
+        Display.input("Enter the amount to withdraw: ");
+        long amount;
+
+        try {
+            amount = input.nextLong();
+            if (amount < 0) {
+                Display.error("Wrong amount.");
+                return;
+            } else if (amount > Account.getBalance() || amount > Integer.MAX_VALUE) {
+                Display.error("Too much amount to withdraw.");
+                return;
+            }
+        } catch (Exception e) {
+            Display.error("Invalid amount.");
+            return;
+        }
+
+        Account.deductBalance(amount);
+        AccountDAO.setBalance(Account.getBalance());
+    }
 }

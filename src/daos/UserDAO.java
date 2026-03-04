@@ -1,5 +1,6 @@
 package daos;
 
+import models.Account;
 import org.apache.commons.csv.*;
 import models.User;
 import session.Session;
@@ -43,7 +44,7 @@ public final class UserDAO {
                 if (email.equals(record.get("Email")) && password.equals(record.get("Password"))) {
                     User u = new User(record.get("FullName"), email, record.get("UUID"));
                     Session.saveCurrentUser(u);
-
+                    Account.setBalance(AccountDAO.getBalance());
                     Display.success("User logged in successfully!");
                     return;
                 }

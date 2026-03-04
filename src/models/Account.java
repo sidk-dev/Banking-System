@@ -7,7 +7,13 @@ public final class Account {
     public static long getBalance() {
         return balance;
     }
+    public static void setBalance(long balance) {
+        Account.balance = balance;
+    }
     public static void addBalance(long balance) {
         Account.balance += balance;
+    }
+    public static void deductBalance(long balance) {
+        Account.balance -= balance;
     }
 }

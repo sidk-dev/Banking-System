@@ -1,4 +1,5 @@
 import daos.AccountDAO;
+import models.Account;
 import services.AccountService;
 import session.Session;
 import utils.Display;
@@ -26,6 +27,12 @@ public class Main {
 
             if (Session.isLoggedIn()) {
                 switch (choice) {
+                    case 1:
+                        AccountService.deposit();
+                        break;
+                    case 2:
+                        AccountService.withdraw();
+                        break;
                     case 3:
                         AccountService.showBalance();
                         break;
