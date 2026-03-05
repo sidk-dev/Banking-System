@@ -13,6 +13,10 @@ public final class Display {
 
     private Display() {}
 
+    public static void message(String msg) {
+        System.out.printf("%s%s%s\n", msg);
+    }
+
     public static void menu(String msg) {
         System.out.printf("%s%s%s\n", ANSI_YELLOW, msg, ANSI_RESET_COLOR);
     }
@@ -30,10 +34,12 @@ public final class Display {
     }
 
     public static void errors(List<String> errors) {
-        System.out.print(ANSI_RED);
-        for (String str: errors) {
-            System.out.printf("-> %s\n", str);
+        if (errors != null && !errors.isEmpty()) {
+            System.out.print(ANSI_RED);
+            for (String str : errors) {
+                System.out.printf("-> %s\n", str);
+            }
+            System.out.print(ANSI_RESET_COLOR);
         }
-        System.out.print(ANSI_RESET_COLOR);
     }
 }

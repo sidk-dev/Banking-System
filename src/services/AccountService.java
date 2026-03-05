@@ -25,9 +25,7 @@ public final class AccountService {
             fullname = input.nextLine();
 
             errors = FullNameValidator.validate(fullname);
-            if (errors != null) {
-                Display.errors(errors);
-            }
+            Display.errors(errors);
         } while (errors != null);
 
         do{
@@ -35,9 +33,7 @@ public final class AccountService {
             email = input.next();
 
             errors = EmailValidator.validate(email);
-            if (errors != null) {
-                Display.errors(errors);
-            }
+            Display.errors(errors);
         } while (errors != null);
 
         input.nextLine(); // used to avoid unwanted password submission due to next line character from previous submission.
@@ -47,9 +43,7 @@ public final class AccountService {
             password = input.nextLine();
 
             errors = PasswordValidator.validate(password);
-            if (errors != null) {
-                Display.errors(errors);
-            }
+            Display.errors(errors);
         } while (errors != null);
 
         // fullname = input.nextLine();
@@ -70,9 +64,7 @@ public final class AccountService {
             email = input.next();
 
             errors = EmailValidator.validate(email);
-            if (errors != null) {
-                Display.errors(errors);
-            }
+            Display.errors(errors);
         } while (errors != null);
 
         input.nextLine();
@@ -82,9 +74,7 @@ public final class AccountService {
             password = input.nextLine();
 
             errors = PasswordValidator.validate(password);
-            if (errors != null) {
-                Display.errors(errors);
-            }
+            Display.errors(errors);
         } while (errors != null);
 
         // email = input.next();
