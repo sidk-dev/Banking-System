@@ -17,13 +17,31 @@ import java.util.UUID;
 public final class TransactionDAO {
     private static final String fileName = "transactions.csv";
     private static final String[] headers = {"ID", "UserID", "Amount", "Type", "TimeStamp"};
-    public static final CSVFormat CSV_FORMAT = CSVFormat.DEFAULT.builder()
-            .setHeader(headers)
-            .get();
+    private static CSVFormat CSV_FORMAT;
 
     private TransactionDAO() {}
 
+    private static boolean fileExists() {
+        File file = new File(fileName);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                CSV_FORMAT = CSVFormat.DEFAULT.builder().setHeader(headers).get();
+            } else {
+                CSV_FORMAT = CSVFormat.DEFAULT.builder().get();
+            }
+        } catch (IOException e) {
+            Display.error("Something went wrong: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public static void createTransaction(double amount, Transaction.TYPE type) {
+        if (!fileExists()) {
+            return;
+        }
+
         try (
                 FileWriter writer = new FileWriter(fileName, true);
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSV_FORMAT)
@@ -42,6 +60,10 @@ public final class TransactionDAO {
     }
 
     public static List<Transaction> getTransactions() {
+        if (!fileExists()) {
+            return new ArrayList<>();
+        }
+
         List<Transaction> transactionList = new ArrayList<>();
 
         File file = new File(fileName);

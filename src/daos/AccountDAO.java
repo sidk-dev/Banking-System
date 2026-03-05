@@ -6,10 +6,7 @@ import org.apache.commons.csv.CSVRecord;
 import session.Session;
 import utils.Display;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -17,13 +14,31 @@ import java.nio.file.StandardCopyOption;
 public final class AccountDAO {
     private static final String fileName = "accounts.csv";
     private static final String[] headers = {"UUID", "Balance"};
-    public static final CSVFormat CSV_FORMAT = CSVFormat.DEFAULT.builder()
-            .setHeader(headers)
-            .get();
+    private static CSVFormat CSV_FORMAT;
 
     private AccountDAO() {}
 
+    private static boolean fileExists() {
+        File file = new File(fileName);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                CSV_FORMAT = CSVFormat.DEFAULT.builder().setHeader(headers).get();
+            } else {
+                CSV_FORMAT = CSVFormat.DEFAULT.builder().get();
+            }
+        } catch (IOException e) {
+            Display.error("Something went wrong: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public static void createAccount(String uuid) {
+        if (!fileExists()) {
+            return;
+        }
+
         try (
                 FileWriter writer = new FileWriter(fileName, true);
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSV_FORMAT)
@@ -36,6 +51,10 @@ public final class AccountDAO {
     }
 
     public static void setBalance(double balance) {
+        if (!fileExists()) {
+            return;
+        }
+
         String tempPath = "temp_account.csv";
         try (
                 FileWriter writer = new FileWriter(tempPath, true);
@@ -67,6 +86,10 @@ public final class AccountDAO {
     }
 
     public static double getBalance() {
+        if (!fileExists()) {
+            return 0.0;
+        }
+
         try (Reader reader = new FileReader(fileName)) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder()
                     .setSkipHeaderRecord(true)
