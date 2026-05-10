@@ -1,75 +1,82 @@
 # Smart Banking System
 
-A console-based banking application built in Java that demonstrates core object-oriented programming principles, layered architecture (DAO pattern), flat-file persistence via CSV, input validation, and session management — all through a colorful interactive CLI.
+A console-based banking app written in Java. It uses a layered DAO/service structure, in-memory session tracking, CSV persistence, and ANSI-colored console output to simulate a small banking workflow from the terminal.
 
-## Features
+## What You Can Do
 
-- **User Registration** — create an account with full name, email, and a secure password
-- **User Login / Logout** — authenticate with email and password; session is tracked in-memory
-- **View Balance** — check your current account balance after logging in
-- **Input Validation** — real-time feedback for name, email, and password rules:
-  - Full name: 2–54 characters
-  - Email: standard format, up to 256 characters
-  - Password: 8–128 characters, must include uppercase, lowercase, digit, and special character; no whitespace
-- **Colorful CLI** — ANSI color-coded prompts, success messages, and error output
+- Create an account with full name, email, and password validation.
+- Log in and log out using your saved credentials.
+- Deposit money into the current account.
+- Withdraw money with balance checks.
+- View the current balance after login.
+- View the transaction history for the logged-in user.
+
+## How It Works
+
+- User records are stored in `users.csv`.
+- Account balances are stored in `accounts.csv`.
+- Transaction history is stored in `transactions.csv`.
+- The active login is kept in memory through the session helper.
+- CSV files are created automatically the first time they are needed.
+
+## Validation Rules
+
+- Full name: 2 to 54 characters, cannot be empty.
+- Email: valid email format, up to 256 characters.
+- Password: 8 to 128 characters, must contain at least one uppercase letter, one lowercase letter, one digit, and one special character, and cannot contain whitespace.
 
 ## Project Structure
 
 ```
 src/
-├── Main.java                        # Entry point; drives the interactive menu loop
+├── Main.java
 ├── daos/
-│   ├── UserDAO.java                 # Reads/writes user records to users.csv
-│   └── AccountDAO.java              # Reads/writes account records to accounts.csv
+│   ├── UserDAO.java
+│   ├── AccountDAO.java
+│   └── TransactionDAO.java
 ├── models/
-│   ├── User.java                    # User entity (UUID, full name, email)
-│   └── Account.java                 # Account entity (balance)
+│   ├── User.java
+│   ├── Account.java
+│   └── Transaction.java
 ├── services/
-│   └── AccountService.java          # Orchestrates registration, login, logout, balance display
+│   └── AccountService.java
 ├── session/
-│   └── Session.java                 # In-memory session; tracks the logged-in user
+│   └── Session.java
 └── utils/
-    ├── Display.java                 # ANSI-colored console output helpers
-    ├── Constants.java               # Shared constants
-    └── Validators/
-        ├── EmailValidator.java      # Email format & length validation
-        ├── FullNameValidator.java   # Full name length validation
-        └── PasswordValidator.java   # Password strength & length validation
+      ├── Display.java
+      ├── Constants.java
+      └── Validators/
+            ├── EmailValidator.java
+            ├── FullNameValidator.java
+            └── PasswordValidator.java
 ```
 
-## Data Storage
+## Requirements
 
-User and account data is persisted locally as CSV files in the working directory:
+- Java 11 or newer
+- Apache Commons CSV on the classpath
 
-| File           | Columns                       |
-|----------------|-------------------------------|
-| `users.csv`    | UUID, FullName, Email, Password |
-| `accounts.csv` | UUID, Balance                 |
+## Run Locally
 
-These files are created automatically on first use.
+This project does not use Maven or Gradle, so you need to compile and run it with `javac` and `java` directly.
 
-> ⚠️ **Security notice:** Passwords are currently stored in plaintext. This is intentional for simplicity in this learning project and is **not suitable for production use**. A real application should hash passwords (e.g., with BCrypt) before storing them.
+### Windows
 
-## Prerequisites
+```bash
+javac -cp .;path\to\commons-csv.jar -sourcepath src -d out src\Main.java
+java -cp out;path\to\commons-csv.jar Main
+```
 
-- **Java 11** or newer
-- **Apache Commons CSV** on the classpath (used by the DAO layer)
+### macOS / Linux
 
-## Running the Application
+```bash
+javac -cp .:/path/to/commons-csv.jar -sourcepath src -d out src/Main.java
+java -cp out:/path/to/commons-csv.jar Main
+```
 
-1. Compile all sources from the `src/` directory:
+## Menu Flow
 
-   ```bash
-   javac -cp /path/to/commons-csv.jar -sourcepath src src/Main.java -d out/
-   ```
-
-2. Run the compiled application:
-
-   ```bash
-   java -cp out:/path/to/commons-csv.jar Main
-   ```
-
-### Unauthenticated Menu
+### When Logged Out
 
 ```
 (1) Create account
@@ -77,7 +84,7 @@ These files are created automatically on first use.
 (3) Exit
 ```
 
-### Authenticated Menu
+### When Logged In
 
 ```
 (1) Deposit
@@ -88,6 +95,18 @@ These files are created automatically on first use.
 (6) Exit
 ```
 
+## Data Files
+
+| File               | Purpose                                                     |
+| ------------------ | ----------------------------------------------------------- |
+| `users.csv`        | Stores user UUID, full name, email, and password            |
+| `accounts.csv`     | Stores account UUID and balance                             |
+| `transactions.csv` | Stores transaction ID, user ID, amount, type, and timestamp |
+
+## Security Note
+
+Passwords are stored in plaintext in this learning project. That is not suitable for production use. If you plan to evolve the app, password hashing should be the first security upgrade.
+
 ## License
 
-This project is licensed under the terms of the [LICENSE](LICENSE) file included in this repository.
+This project is licensed under the terms of the [LICENSE](LICENSE) file.
